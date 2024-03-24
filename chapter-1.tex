@@ -1,25 +1,27 @@
-\chapter{[The lone chapter]}
+\chapter{[the lone chapter]}
 
 \begin{conv}
-	\leavevmode
+	Unless stated otherwise, assume the following:\myMargin{
+		Filler text\ldots
+	}
 	\begin{assmplist}
 		\item $K\in\{\mathbb R, \mathbb C\}$.
 		
+		\item $X$ will denote a generic set.
+		
 		\item Vector spaces will be over $K$.
 		
-		\item Abusing the notation slightly, the same notation will be used to denote the restriction to $\mathbb{R\to R}$ of $\Re$, $\Im$ and complex conjugation.
+		\item Evaluation functions on any subset of $K^X$ will be denoted by $\delta_x$'s. These are clearly linear maps in case the domain is a subspace of $K^X$.
 		
 		\item $\mathscr H$ will denote a Hilbert space over $K$.
 		
-		\item $X$ will denote a generic set.
+		\item Abusing the notation slightly, the same notation will be used to denote the restriction to $\mathbb{R\to R}$ of $\Re$, $\Im$ and complex conjugation.
 		
-		\item Evaluation functionals on $K^X$ will be denoted by $\delta_x$'s.
-		
-		\item We'll use $\norm x := \sqrt{\iprd{x, x}}$ for $x\in\mathscr H$.
-		
-		\item Whenever $\iprd{\cdot, \cdot}$ is a p.s.d.\ conjugate symmetric bilinear form on a vector space,\footnote{
+		\item Whenever $\iprd{\cdot, \cdot}$ is semi-inner-product on a vector space,\footnote{
 			That is, it's almost a norm except not possibly satisfying the positive definiteness.
-		} then we'll use the usual $\norm\cdot$ to denote the induced seminorm.
+		} we'll use the usual $\norm\cdot$ to denote the induced seminorm.\footnote{Note that a semi-inner-product obeys the Cauchy-Schwarz inequality (just follow Schwarz's proof using the quadratic polynomial).}
+		
+		\item For any function $k\colon X\times X\to K$, we'll use $k_x$ to stand for $k(\cdot, x)\colon X\to K$
 	\end{assmplist}
 \end{conv}
 
@@ -37,32 +39,25 @@
 		\end{mylist}
 	\end{dfn}
 	
-	\begin{dfn}[Reproducing kernel]
-		Let $\mathscr H\subseteq K^X$. Then an r.k.\ for $\mathscr H$ is a function $k\colon X\times X\to K$ such that \tfh:
-		\begin{mylist}
-			\item $k(\cdot, x)\in\mathscr H$ for each $x\in X$.
-			\item \itemHead{Reproducing property} $f(x) = \iprd{f, k(\cdot, x)}$ for each $f\in\mathscr H$ and each $x\in X$.
-		\end{mylist}
+	\begin{dfn}[Reproducing kernel and RKHS's]
+		A \emph{reproducing kernel} for $\mathscr H\subseteq K^X$ is a function $k\colon X\times X\to K$ such that for any $x\in X$, we have that $k_x\in\mathscr H$ and that it obeys the \emph{reproducing property}, \ie,
+		\[
+		f(x) = \iprd{f, k_x}
+		\]
+		for any $f\in\mathscr H$.
+		
+		Further, if $\mathscr H$ admits a reproducing kernel, it's called a \emph{reproducing kernel Hilbert space}.
 	\end{dfn}
 	
 	
-	\begin{cor}
-		There exists at most one r.k.\ for a Hilbert space.
-	\end{cor}
+	\begin{lem}\label{LEM: repr kernel is a psd kernel}
+		A reproducing kernel is a p.s.d.\ kernel.
+	\end{lem}
 	
 	\begin{proof}
-		Suppose $k_1$ and $k_2$ are r.k.'s for $\mathscr H\subseteq K^X$. Then for any $f\in \mathscr H$ and $x\in X$, we have $\iprd{f, k_1(\cdot, x) - k_2(\cdot, x)} = f(x) - f(x) = 0$ so that $k_1(\cdot, x) = k_2(\cdot, x)$. Since $x$ was arbitrary, $k_1 = k_2$.
-	\end{proof}
-	
-	
-	\begin{cor}
-		An r.k.\ is a p.s.d.\ kernel.
-	\end{cor}
-	
-	\begin{proof}
-		Let $k$ be an r.k.\ of $\mathscr H\subseteq K^X$.
+		Let $k$ be a reproducing kernel of $\mathscr H\subseteq K^X$.
 		\begin{prooflist}
-			\item Conjugate symmetry: $k(y, x) = \iprd{k(\cdot, x), k(\cdot, y)} = \overline{\iprd{k(\cdot, y), k(\cdot, x)}} = \overline{k(x, y)}$.
+			\item Conjugate symmetry: $k(y, x) = k_x(y) = \iprd{k_x, k_y} = \overline{\iprd{k_y, k_x}} = \overline{k_y(x)} = \overline{k(x, y)}$.
 			
 			\item Positive semi-definite: Let $x_1, \ldots, x_n\in X$ and $\alpha_1, \cdots, \alpha_n\in K$. Then setting $k_x := k(\cdot, x)$, we have
 			\begin{align*}
@@ -80,35 +75,71 @@
 	\end{rmk}
 	
 	
-	
-	\begin{dfn}[Reproducing kernel Hilbert space]
-		If $\mathscr H\subseteq K^X$ and admits a reproducing kernel, then it's called an RKHS.
-	\end{dfn}
-	
-	
-	\begin{cor}[Characterizing RKHS's]
+	\begin{lem}[Characterizing RKHS's]
 		$\mathscr H\subseteq K^X$ is an RKHS $\iff$ evaluation functionals on it are continuous.
-	\end{cor}
+	\end{lem}
 	
 	\begin{proof}
-		``$\Rightarrow$'': Let $k$ be the r.k.\ of $\mathscr H$. Then $\abs{\delta_x(f)} = \abs{f(x)} = \abs{\iprd{f, k(\cdot, x)}}\le \norm f\norm{k(\cdot, x)} = \sqrt{k(x, x)}\,\norm f$. (Note that $k(x, x)\ge 0$ since $k$ is positive semi-definite.) Thus $\norm{\delta_x}\le \sqrt{k(x, x)} < +\infty$.
+		``$\Rightarrow$'': Let $k$ be a reproducing kernel of $\mathscr H$. Then $\abs{\delta_x(f)} = \abs{f(x)} = \abs{\iprd{f, k_x}}\le \norm{k_x}\norm f$ (note that $k_x\in \mathscr H$). Thus $\norm{\delta_x}\le \norm{k_x} < +\infty$.
 		
-		``$\Leftarrow$'': By Riesz, we can define $\ell\colon X\to\mathscr H$ such that $\delta_x = \iprd{\cdot, \ell_x}$. Define $k\colon X\times X\to K$ by $k(\cdot, x) := \ell_x$. Then $f(x) = \delta_x(f) = \iprd{f, \ell_x} = \iprd{f, k(\cdot, x)}$.
+		``$\Leftarrow$'': By Riesz, we can define $k\colon X\times X\to K$ such that $\delta_x = \iprd{\cdot, k_x}$ (since $\delta_x$'s are continuous). Then $f(x) = \delta_x(f) = \iprd{f, k_x}$.
 	\end{proof}
 	
 	
 	
-	\begin{cor}
-		Convergence in an RKHS $\implies$ pointwise convergence.
+	\begin{cor}\label{COR: conv in RKHS implies pointwise convergence}
+		Convergence in an RKHS $\implies$ pointwise convergence.\myMargin{
+			What about the converse?
+		}
 	\end{cor}
 	
-	\begin{proof}
-		Let $\mathscr H\subseteq K^X$ be an RKHS with $k$ being the r.k. Let $f_n\to f$ in $\mathscr H$. Let $x\in X$. Since $\delta_x$ is continuous, $\delta_x(f_n)\to \delta_x(f)$ in $K$, \ie, $f_n(x)\to f(x)$ in $K$.
-	\end{proof}
 	
+	\begin{thm}[RKHS $\mapsto$ r.k. is injective]\label{THM: RKHS --> rk is injective}
+		\leavevmode
+		\begin{mylist}
+			\item An RKHS's reproducing kernel is unique.
+			
+			\item Conversely, a reproducing kernel makes at most one Hilbert space into an RKHS.
+		\end{mylist}
+	\end{thm}
+	
+	\begin{proof}
+		\begin{mylist}
+			\item Suppose $k$ and $k'$ are reproducing kernels for $\mathscr H\subseteq K^X$. Then for any $f\in \mathscr H$ and $x\in X$, we have $\iprd{f, k_x - k'_x} = f(x) - f(x) = 0$ so that $k_x = k'_x$. Since $x$ was arbitrary, $k = k'$.
+			
+			\item Let $k$ be a reproducing kernel for $\mathscr H\subseteq K^X$. It suffices to show that $\mathscr H$ is uniquely determined (along with its inner product\footnote{
+				Note that addition and scalar multiplication are already determined (namely, pointwise) by definition.
+			}) by $k$. Let $\mathscr H_0$ be the subspace of $\mathscr H$ spanned by $k_x$'s for $x\in X$. Note that $\mathscr H_0^\perp = \{0\}$ (because of $k$'s reproducing property) so that $\clos{\mathscr H_0} = (\mathscr H_0^\perp)^\perp = \mathscr H$.\footnote{
+				A naïve glance suggests that this fixes $\mathscr H$, but it need \emph{not}! We haven't yet reduced the description of $\mathscr H$ to only that of $k$. The closure of $\mathscr H_0$ (which \emph{does} only depend on $k$) is dependent on the norm topology induced from $\mathscr H$, whose description hasn't been reduced yet.
+			} Since $\mathscr H_0$ is determined by $k$, it suffices to have that the topology on $\mathscr H$ is also determined by $k$ $\wimpliedby$ the norm on $\mathscr H$ is determined by $k$. Note that this will also imply that the inner product is uniquely determined (due to polarization).
+			
+			It suffices to have that the norm is determined on $\mathscr H_0$ for it is dense in $\mathscr H$. Indeed, for $f = \sum_{i = \alpha_i}^n \alpha_i k_{x_i}$, we have
+			\begin{align*}
+				\norm{f}^2
+				& = \sum_{i, j = 1}^n \alpha_i \overline{\alpha_j} \iprd{k_{x_i}, k_{x_j}}\\
+				& = \sum_{i, j = 1}^n \overline{\alpha_j}\, k(x_j, x_i)\, \alpha_i\text.\tag*{\qedhere}
+			\end{align*}
+		\end{mylist}
+	\end{proof}
 	
 	\begin{rmk}
-		Note that completeness of $\mathscr H$ was of no consequence in the results so far. Thus it might seem that we must generalize the definition of r.k.\ to include \IPS{s}. However, as \myRef{THM: Moore-Aronszajn} will show, if $k$ is an r.k.\ for an \IPS, then $k$ will also be an r.k.\ for an \textbf{?????????}
+		\begin{mylist}
+			\item Note that completeness of $\mathscr H$ was used in writing $\clos{\mathscr H_0} = (\mathscr H_0^\perp)^\perp$.\myMargin{
+				An example to show the necessity of this?
+			}
+			
+			\item The converse is the content of \myRef{THM: Moore-Aronszajn}, which together with the above gives the following correspondence for any set $X$:
+			\[
+			\begin{tikzcd}
+				\{\}\ar[r, leftrightarrow] & \{\}\ar[r, leftrightarrow] & \{\}
+			\end{tikzcd}
+			\]
+		\end{mylist}
+	\end{rmk}
+	
+	
+	\begin{rmk} % IT IS in PRPii
+		Note that completeness of $\mathscr H$ was of no consequence in the results so far. Thus it might seem that we must generalize the definition of reproducing kernel to include \IPS{s}. However, as \myRef{THM: Moore-Aronszajn} will show, if $k$ is an reproducing kernel for an \IPS, then $k$ will also be an reproducing kernel for an \textbf{?????????}
 	\end{rmk}
 	
 	
@@ -117,44 +148,68 @@
 	
 \section{Moore-Aronszajn}
 
+	We now ask the converse of \myRef{LEM: repr kernel is a psd kernel}. Given a p.s.d.\ kernel $k$ on $X$, we construct an RKHS $\mathscr H$ whose reproducing kernel is precisely $k$. We do so in the following steps:
+	\begin{mylist}
+		\item Each $k_x$ must lie in $\mathscr H$. Thus, we are motivated to first define a vector space $\mathscr H_0$ spanned by $k_x$'s.
+		
+		\item We show that there's a unique inner product on $\mathscr H_0$ \wrt which $k$ has the reproducing property.
+		
+		\item Finally, we complete $\mathscr H_0$, and verify that it's the required RKHS.
+	\end{mylist}
+
 
 	\begin{lem}\label{LEM: space H_0}
-		Let $k$ be a p.s.d.\ kernel. Define $\mathscr H_0$ to be the span in $K^X$ of all $k_x := k(\cdot, x)$'s for $x\in X$. Then \tfh:
-		\begin{mylist}
-			\item $\mathscr H_0$ admits an inner product such that \tfh:
-			\begin{mylist}
-				\item $\iprd{k_x, k_y} = k(y, x)$.
-				
-				\item $f(x) = \iprd{f, k_x}$ for any $f\in\mathscr H_0$.
-			\end{mylist}
-			
-			\item Cauchy sequences in $\mathscr H_0$ have pointwise limits.
-		\end{mylist}
+		Let $k$ be a p.s.d.\ kernel. Define $\mathscr H_0$ to be the span in $K^X$ of $k_x$'s for $x\in X$. Then $\mathscr H_0$ admits a unique inner product such that $f(x) = \iprd{f, k_x}$ for any $f\in\mathscr H_0$.
 	\end{lem}
 	
 	\begin{proof}
-		\begin{mylist}
-			\item 	We show that
-			\[
-			\iprd{f, g}
-			= \sum\nolimits_{i. j} \overline{\beta_j}\, k(y_j, x_i)\,\alpha_i\addtag\label{EQN: inner prod on H_0}
-			\]
-			defines an inner product on $\mathscr H_0$ for $f = \sum_{i = 1}^m\alpha_i k_{x_i}$ and $g = \sum_{j = 1}^n \beta_j k_{y_j}$. That it's well-defined follows because
-			\[
-			\sum\nolimits_j \overline{\beta_j} f(y_j)
-			= \sum\nolimits_{i. j} \overline{\beta_j}\, k(y_j, x_i)\,\alpha_i
-			= \sum\nolimits_i \overline{g(x_i)} \alpha_i\addtag\label{EQN: inner prod on H_0 well-def}
-			\]
-			where the second equality follows since \uline{$k$ is conjugate symmetric}.
-			It's immediate from \myRef{EQN: inner prod on H_0} that $\iprd{\cdot, \cdot}$ is p.s.d.\ and conjugate symmetric (since \uline{$k$ is a p.s.d. kernel}), and from \myRef{EQN: inner prod on H_0 well-def} that it's bilinear with $\iprd{f, k_x} = f(x)$ for any $x\in X$ (take $g = k_x$). Only positive definiteness remains to be shown:
-			\begin{subproof}
-				Firstly, note that $\iprd{\cdot, \cdot}$ is a p.s.d.\ conjugate symmetric bilinear form so that it obeys Cauchy-Schwarz and induces a seminorm. Now, let $\norm f = 0$. Then for any $x\in X$, we have $\abs{f(x)} = \abs{\iprd{f, k_x}} \le \norm f\norm{k_x} = 0$.
-			\end{subproof}
-			
-			
-			\item Let $(f_n)$ be Cauchy in $\mathscr H_0$. Then for any $x\in X$, we $\abs{ f_m(x) - f_n(x) } = \abs{\delta_x(f_m - f_n)}\le \norm{\delta_x}\norm{f_m - f_n}\which\to 0$ as $m, n\to 0$ so that $(f_n(x))$ is Cauchy in $K$ and hence \cgt.\qedhere
-		\end{mylist}
+		We show that
+		\[
+		\iprd{f, g}
+		= \sum\nolimits_{i, j} \overline{\beta_j}\, k(y_j, x_i)\,\alpha_i\addtag\label{EQN: inner prod on H_0}
+		\]
+		defines an inner product on $\mathscr H_0$ for $f = \sum_{i = 1}^m\alpha_i k_{x_i}$ and $g = \sum_{j = 1}^n \beta_j k_{y_j}$. That it's well-defined follows because
+		\[
+		\sum\nolimits_j \overline{\beta_j} f(y_j)
+		= \sum\nolimits_{i. j} \overline{\beta_j}\, k(y_j, x_i)\,\alpha_i
+		= \sum\nolimits_i \overline{g(x_i)} \alpha_i\addtag\label{EQN: inner prod on H_0 well-def}
+		\]
+		where the second equality follows since \uline{$k$ is conjugate symmetric}.
+		It's immediate from \myRef{EQN: inner prod on H_0} that $\iprd{\cdot, \cdot}$ is p.s.d.\ and conjugate symmetric (since \uline{$k$ is a p.s.d. kernel}), and from \myRef{EQN: inner prod on H_0 well-def} that it's bilinear with $\iprd{f, k_x} = f(x)$ for any $x\in X$ (take $g = k_x$). Only positive definiteness remains to be shown:
+		\begin{subproof}
+			Note that $\iprd{\cdot, \cdot}$ is a semi-inner-product so that it obeys Cauchy-Schwarz and induces a seminorm. Now, let $\norm f = 0$. Then for any $x\in X$, we have $\abs{f(x)} = \abs{\iprd{f, k_x}} \le \norm f\norm{k_x} = 0$.
+		\end{subproof}
 	\end{proof}
+	
+	
+	\begin{lem}
+		Continuing \myRef{LEM: space H_0}, let $S := \{\text{Cauchy sequences in $\mathscr H_0$}\}$. Then there exists a linear map $\phi\colon S\to K^X$ that maps Cauchy sequences to their pointwise limits, the kernel of which consists precisely of sequences that converge to $0$ in $\mathscr H_0$.
+	\end{lem}
+	
+	\begin{proof}
+		First we show that $\phi$ is indeed well-defined:
+		\begin{subproof}
+			Let $(f_n)$ be Cauchy in $\mathscr H_0$. Then for any $x\in X$, we have $\abs{ f_m(x) - f_n(x) } = \abs{\iprd{f_m - f_n, k_x}}\le \norm{f_n - f_m}\norm{k_x} \which\to 0$ as $m, n\to \infty$ so that $(f_n(x))$ is Cauchy in $K$ and hence \cgt. Thus, pointwise limits of Cauchy sequences in $\mathscr H_0$ do exist, and since $K$ is Hausdorff, these are unique.
+		\end{subproof}
+		
+		Linearity of $\phi$ is easy. We now compute $\ker\phi$. If $f_n\to 0$ in $\mathscr H_0$, then for any $x\in X$, we have $f_n(x) = \iprd{f_n, k_x}\which\to 0$. Conversely, let $(f_n)$ be a Cauchy sequence in $\mathscr H_0$ that converges to $0$ pointwise. We show that it converges to $0$ in $\mathscr H_0$ as well:
+		\begin{subproof}
+			Let $\epsilon > 0$. Fix an $N$ and write $f_N = \sum_{i = 1}^n \alpha_i k_{x_i}$. Now, 
+			\begin{align*}
+				\norm{f_n}^2 
+				& = \bigl| \iprd{f_n - f_N, f_n} + \iprd{f_N, f_n}\bigr| \\
+				& \le \bigl| \iprd{f_n - f_N, f_n} \bigr| + \biggl|\sum_{i = 1}^n \overline{\alpha_i} f_n(x_i)\biggr|\\
+				& \le \norm{f_n - f_N}\norm{f_n} + \sum_{i = 1}^n \abs{\alpha_i}\abs{f_n(x_i)}
+			\end{align*}
+			so that taking $N$ large enough ensures that the above is eventually less than any arbitrary $\epsilon > 0$.\qedhere
+		\end{subproof}
+	\end{proof}
+	
+	Note that $S/\ker\phi$ is precisely the\footnote{``The'' is up to isometries.} metric completion of $\mathscr H_0$.
+	
+	
+	
+	\vspace{2in}
 	
 	
 	\begin{lem}
