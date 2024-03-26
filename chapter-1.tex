@@ -1,9 +1,7 @@
 \chapter{[the lone chapter]}
 
 \begin{conv}
-	Unless stated otherwise, assume the following:\myMargin{
-		Filler text\ldots
-	}
+	Unless stated otherwise, assume the following:
 	\begin{assmplist}
 		\item $K\in\{\mathbb R, \mathbb C\}$.
 		
@@ -25,10 +23,10 @@
 	\end{assmplist}
 \end{conv}
 
-\section{Basics}
+\section{[the first section]}
 
-	\begin{dfn}[Positive semi-definite kernel]
-		A p.s.d.\ kernel on a set $X$ is a function $k\colon X\times X\to K$ that is
+	\begin{dfn}[p.s.d. kernels]
+		A positive semi-definite kernel on a set $X$ is a function $k\colon X\times X\to K$ that is
 		\begin{mylist}
 			\item \emph{conjugate symmetric}, \ie, $k(y, x) = \overline{k(x, y)}$; and,
 			
@@ -39,7 +37,7 @@
 		\end{mylist}
 	\end{dfn}
 	
-	\begin{dfn}[Reproducing kernel and RKHS's]
+	\begin{dfn}[r.k.'s and RKHS's]
 		A \emph{reproducing kernel} for $\mathscr H\subseteq K^X$ is a function $k\colon X\times X\to K$ such that for any $x\in X$, we have that $k_x\in\mathscr H$ and that it obeys the \emph{reproducing property}, \ie,
 		\[
 		f(x) = \iprd{f, k_x}
@@ -109,8 +107,8 @@
 			
 			\item Let $k$ be a reproducing kernel for $\mathscr H\subseteq K^X$. It suffices to show that $\mathscr H$ is uniquely determined (along with its inner product\footnote{
 				Note that addition and scalar multiplication are already determined (namely, pointwise) by definition.
-			}) by $k$. Let $\mathscr H_0$ be the subspace of $\mathscr H$ spanned by $k_x$'s for $x\in X$. Note that $\mathscr H_0^\perp = \{0\}$ (because of $k$'s reproducing property) so that $\clos{\mathscr H_0} = (\mathscr H_0^\perp)^\perp = \mathscr H$.\footnote{
-				A naïve glance suggests that this fixes $\mathscr H$, but it need \emph{not}! We haven't yet reduced the description of $\mathscr H$ to only that of $k$. The closure of $\mathscr H_0$ (which \emph{does} only depend on $k$) is dependent on the norm topology induced from $\mathscr H$, whose description hasn't been reduced yet.
+			}). Let $\mathscr H_0$ be the subspace of $\mathscr H$ spanned by $k_x$'s for $x\in X$. Note that $\mathscr H_0^\perp = \{0\}$ (because of $k$'s reproducing property) so that $\clos{\mathscr H_0} = (\mathscr H_0^\perp)^\perp = \mathscr H$.\footnote{
+				A naïve glance suggests that this fixes $\mathscr H$, but it \emph{doesn't}! At least yet. We haven't yet reduced the description of $\mathscr H$ to only that of $k$. The closure of $\mathscr H_0$ (which \emph{does} only depend on $k$) is dependent on the norm topology induced from $\mathscr H$, which might still depend on the choice of $\mathscr H$, not just $k$.
 			} Since $\mathscr H_0$ is determined by $k$, it suffices to have that the topology on $\mathscr H$ is also determined by $k$ $\wimpliedby$ the norm on $\mathscr H$ is determined by $k$. Note that this will also imply that the inner product is uniquely determined (due to polarization).
 			
 			It suffices to have that the norm is determined on $\mathscr H_0$ for it is dense in $\mathscr H$. Indeed, for $f = \sum_{i = \alpha_i}^n \alpha_i k_{x_i}$, we have
@@ -123,32 +121,34 @@
 	\end{proof}
 	
 	\begin{rmk}
-		\begin{mylist}
-			\item Note that completeness of $\mathscr H$ was used in writing $\clos{\mathscr H_0} = (\mathscr H_0^\perp)^\perp$.\myMargin{
-				An example to show the necessity of this?
-			}
-			
-			\item The converse is the content of \myRef{THM: Moore-Aronszajn}, which together with the above gives the following correspondence for any set $X$:
-			\[
-			\begin{tikzcd}
-				\{\}\ar[r, leftrightarrow] & \{\}\ar[r, leftrightarrow] & \{\}
-			\end{tikzcd}
-			\]
-		\end{mylist}
+		Note that completeness of $\mathscr H$ was used in writing $\clos{\mathscr H_0} = (\mathscr H_0^\perp)^\perp$.\myMargin{
+			Any example to show the necessity of this?
+		} Other than that, it was not used elsewhere until now.
 	\end{rmk}
 	
+	We summarize our results so far. For any set $X$, we have:
+	\[
+	\begin{tikzcd}[column sep=huge]
+		\{ \text{RKHS's on $K^X$} \}\ar[r, "\text{\myRef{THM: RKHS --> rk is injective}}", "\text{(injective)}"']
+		& \{ \text{r.k.'s on $X$} \}\ar[r, hookrightarrow, "\text{\myRef{LEM: repr kernel is a psd kernel}}", "\text{(inclusion)}"']
+		& \{ \text{p.s.d.\ kernels on $X$} \}
+	\end{tikzcd}
+	\]
 	
-	\begin{rmk} % IT IS in PRPii
-		Note that completeness of $\mathscr H$ was of no consequence in the results so far. Thus it might seem that we must generalize the definition of reproducing kernel to include \IPS{s}. However, as \myRef{THM: Moore-Aronszajn} will show, if $k$ is an reproducing kernel for an \IPS, then $k$ will also be an reproducing kernel for an \textbf{?????????}
-	\end{rmk}
+	To complete the circle of ideas, we show in the next section that any p.s.d.\ kernel is a reproducing kernel for some (and hence unique) RKHS which will lead to the following satisfying correspondence:
+	\[
+	\begin{tikzcd}
+		\{ \text{RKHS's on $K^X$} \}\ar[r, leftrightarrow]
+		& \{ \text{r.k.'s on $X$} \}\ar[r, phantom, "="]
+		& \{ \text{p.s.d.\ kernels on $X$} \}
+	\end{tikzcd}
+	\]
 	
 	
 	
+\section{Moore-Aaronszajn}
 	
-	
-\section{Moore-Aronszajn}
-
-	We now ask the converse of \myRef{LEM: repr kernel is a psd kernel}. Given a p.s.d.\ kernel $k$ on $X$, we construct an RKHS $\mathscr H$ whose reproducing kernel is precisely $k$. We do so in the following steps:
+	The upcoming lemmas are geared towards the following goal: Given a p.s.d.\ kernel $k$ on a set $X$, we find an RKHS $\mathscr H$ whose reproducing kernel is precisely $k$. We do so in the following steps:
 	\begin{mylist}
 		\item Each $k_x$ must lie in $\mathscr H$. Thus, we are motivated to first define a vector space $\mathscr H_0$ spanned by $k_x$'s.
 		
@@ -156,10 +156,11 @@
 		
 		\item Finally, we complete $\mathscr H_0$, and verify that it's the required RKHS.
 	\end{mylist}
+	
 
 
 	\begin{lem}\label{LEM: space H_0}
-		Let $k$ be a p.s.d.\ kernel. Define $\mathscr H_0$ to be the span in $K^X$ of $k_x$'s for $x\in X$. Then $\mathscr H_0$ admits a unique inner product such that $f(x) = \iprd{f, k_x}$ for any $f\in\mathscr H_0$.
+		Let $k$ be a p.s.d.\ kernel. Define $\mathscr H_0$ to be the subspace of $K^X$ generated by $k_x$'s for $x\in X$. Then $\mathscr H_0$ admits a unique inner product such that $f(x) = \iprd{f, k_x}$ for any $f\in\mathscr H_0$.
 	\end{lem}
 	
 	\begin{proof}
@@ -175,15 +176,17 @@
 		= \sum\nolimits_i \overline{g(x_i)} \alpha_i\addtag\label{EQN: inner prod on H_0 well-def}
 		\]
 		where the second equality follows since \uline{$k$ is conjugate symmetric}.
-		It's immediate from \myRef{EQN: inner prod on H_0} that $\iprd{\cdot, \cdot}$ is p.s.d.\ and conjugate symmetric (since \uline{$k$ is a p.s.d. kernel}), and from \myRef{EQN: inner prod on H_0 well-def} that it's bilinear with $\iprd{f, k_x} = f(x)$ for any $x\in X$ (take $g = k_x$). Only positive definiteness remains to be shown:
+		It's immediate from \myRef{EQN: inner prod on H_0} that $\iprd{\cdot, \cdot}$ is p.s.d.\ and conjugate symmetric (since \uline{$k$ is a p.s.d.\ kernel}), and from \myRef{EQN: inner prod on H_0 well-def} that it's bilinear with $\iprd{f, k_x} = f(x)$ for any $x\in X$ (take $g = k_x$). Only positive definiteness remains to be shown:
 		\begin{subproof}
-			Note that $\iprd{\cdot, \cdot}$ is a semi-inner-product so that it obeys Cauchy-Schwarz and induces a seminorm. Now, let $\norm f = 0$. Then for any $x\in X$, we have $\abs{f(x)} = \abs{\iprd{f, k_x}} \le \norm f\norm{k_x} = 0$.
+			Note that $\iprd{\cdot, \cdot}$ is a semi-inner-product so that it obeys Cauchy-Schwarz and induces a seminorm. Now, let $\norm f = 0$. Then for any $x\in X$, we have $\abs{f(x)} = \abs{\iprd{f, k_x}} \le \norm f\norm{k_x} = 0$.\qedhere
 		\end{subproof}
 	\end{proof}
 	
 	
 	\begin{lem}
-		Continuing \myRef{LEM: space H_0}, let $S := \{\text{Cauchy sequences in $\mathscr H_0$}\}$. Then there exists a linear map $\phi\colon S\to K^X$ that maps Cauchy sequences to their pointwise limits, the kernel of which consists precisely of sequences that converge to $0$ in $\mathscr H_0$.
+		Continuing \myRef{LEM: space H_0}, let\footnote{
+			``$S$'' for ``sequences''.
+		} $S := \{\text{Cauchy sequences in $\mathscr H_0$}\}$. Then there exists a linear map $\phi\colon S\to K^X$ that maps Cauchy sequences to their pointwise limits, the kernel of which consists precisely of sequences that converge to $0$ in $\mathscr H_0$.
 	\end{lem}
 	
 	\begin{proof}
@@ -194,7 +197,7 @@
 		
 		Linearity of $\phi$ is easy. We now compute $\ker\phi$. If $f_n\to 0$ in $\mathscr H_0$, then for any $x\in X$, we have $f_n(x) = \iprd{f_n, k_x}\which\to 0$. Conversely, let $(f_n)$ be a Cauchy sequence in $\mathscr H_0$ that converges to $0$ pointwise. We show that it converges to $0$ in $\mathscr H_0$ as well:
 		\begin{subproof}
-			Let $\epsilon > 0$. Fix an $N$ and write $f_N = \sum_{i = 1}^n \alpha_i k_{x_i}$. Now, 
+			Fix an $N$ and write $f_N = \sum_{i = 1}^n \alpha_i k_{x_i}$. Now, 
 			\begin{align*}
 				\norm{f_n}^2 
 				& = \bigl| \iprd{f_n - f_N, f_n} + \iprd{f_N, f_n}\bigr| \\
@@ -205,24 +208,46 @@
 		\end{subproof}
 	\end{proof}
 	
-	Note that $S/\ker\phi$ is precisely the\footnote{``The'' is up to isometries.} metric completion of $\mathscr H_0$.
+	Thus, we have the following commutative diagram:
+	\[
+	\begin{tikzcd}
+		& S\ar[d]\ar[dr, "\phi|"] & \\
+		\mathscr H_0\ar[ur]\ar[r, "\iota"'] & S/\ker\phi\ar[r, "\tilde\phi"'] & \im\phi
+	\end{tikzcd}
+	\]
+	The map $\mathscr H_0\to S$ represents the function $f\mapsto (f, f, \ldots)$.
 	
+	Now we make our final blow via the following list of arguments:
+	\begin{mylist}
+		\item $\iota\colon f\mapsto \overline{(f, f, \ldots)}$ is a metric completion with the usual metric on $S/\ker\phi$, namely $d(\overline{(f_i)}, \overline{(g_i)}) = \lim_i d(f_i, g_i)\which = \lim_i\norm{f_i - g_i}$.
+		
+		\item Thus, the metric space $S/\ker\phi$ admits a unique Hilbert space structure such that $\iota$ becomes a norm completion with the norm recovering the metric.
+		
+		\item That the vector space structure thus endowed on $S/\ker\phi$ matches with the one due to algebraic quotient is easy to show:
+		\begin{subproof}
+			Note that any two generic \elt{s} of $S/\ker\phi$ are given by $\overline{(f_i)}$ and $\overline{(g_i)}$ where $(f_i)$, $(g_i)$ are Cauchy sequences in $\mathscr H_0$. Note that $\iota(f_n)\stackrel{n}{\to} \overline{(f_i)}$ and $\iota(g_n)\stackrel{n}{\to}\overline{(g_i)}$ (easy). Continuity of addition and linearity of $\iota$ ensure that $\iota(f_n + g_n)\stackrel{n}{\to} \overline{(f_i)} + \overline{(g_i)}$. Finally, note that $\iota(f_n + g_n)\stackrel{n}{\to}\overline{(f_i + g_i)}$ as well so that we indeed have $\overline{(f_i)} + \overline{(g_i)} = \overline{(f_i + g_i)}$, which is precisely the definition of vector addition in the algebraic quotient. Similarly, one can verify for scalar multiplication.
+		\end{subproof}
+		
+		\item $\tilde\phi$ is a vector space \iso.\footnote{
+			\Wrt the algebraic vector space structure on $S/\ker\phi$, not neceassrily the vector space structure coming from completion. Thus, it was crucial to show that these two structures are exactly the same.
+		} Thus, the inner product on $S/\ker\phi$ can be transported to $\im\phi$ without altering the latter's vector space structure, making $\tilde\phi$ an isometric \iso.
+		
+		\item Note that $\tilde\phi\circ\iota$ is precisely the inclusion $\mathscr H_0\hookrightarrow\im\phi$ (just traverse along the top arrows in the commutative diagram above) which is thus an isometric linear map.
+		
+		\item $\im\phi$ is complete since $S/\ker\phi$ is, and thus is a Hilbert space.
+		
+		\item Finally, we show that $k$ still has the reproducing property on $\im\phi$:
+		\begin{subproof}
+			Let $f\in\im\phi$ be the pointwise limit of the Cauchy sequence $(f_i)$ in $\mathscr H_0$. Then $f_i\to f$ in $\im\phi$ as well:
+			\begin{subproof}
+				Note that $f = \tilde\phi(\, \overline{(f_i)} \,)$ and $f_j = \tilde\phi\circ\iota(f_j)$. Thus it suffices to have $\iota(f_j)\stackrel{j}{\to} \overline{(f_i)}$ in $S/\ker\phi$ which is indeed true.
+			\end{subproof}
+			Thus, for any $x\in X$, one has $\iprd{f, k_x} = \lim_i \iprd{f_i, k_x} = \lim_i f_i(x) = f(x)$ as claimed.
+		\end{subproof}
+	\end{mylist}
 	
-	
-	\vspace{2in}
-	
-	
-	\begin{lem}
-		Continuing \myRef{LEM: space H_0}, define $\mathscr H$ to be the set of pointwise limits of Cauchy sequences in $\mathscr H_0$. Clearly, this is a vector subspace of $K^X$. There exists an inner product on $\mathscr H$ given by
-		\[
-		\iprd{f, g} = 
-		\]
-	\end{lem}
-	
-	
+	We have thus constructed a Hilbert space, namely $\im\phi$, whose reproducing kernel is precisely $k$, proving the following:
 	
 	\begin{thm}[Moore-Aronszajn]\label{THM: Moore-Aronszajn}
-		Let $k$ be a p.s.d.\ kernel on $X$. Then there exists a \textbf{unique??} RKHS whose kernel is $k$.
+		Any p.s.d.\ kernel is a reproducing kernel.
 	\end{thm}
-	
-	
